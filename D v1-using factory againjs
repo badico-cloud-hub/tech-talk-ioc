@@ -1,0 +1,24 @@
+import { controller } from './B v1-factory';
+import dep1 from '../xx/xx/'
+import dep2 from '../xx/xx/'
+
+const controllerA = controller.bind(null, dep2(dep1, {
+    configParam: true,
+}));
+
+
+// se o numero de controllers aumentam aqui... bom, ja vira uma bagunca
+
+function handler(event, context, callback) {    
+    if (isProtected() && event.headers.authorization) {
+        return callback(null, JSON.stringify({
+            message: 'You are not authorized! Please refresh your credentials'
+        })) 
+       
+    }
+    const response = controllerA(event, context);
+    return callback(null, JSON.stringify({
+        message: 'You are authorized',
+        payload: response
+    }));
+}
